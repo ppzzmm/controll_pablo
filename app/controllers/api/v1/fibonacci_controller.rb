@@ -2,7 +2,10 @@
 
 class Api::V1::FibonacciController < Api::V1::BaseController
   def index
-    response_success
+    result = Fibonacci::Value.run(file_params[:index])
+    return response_error message: result.error_message unless result.success?
+
+    response_success value: result.object
   end
 
   private
